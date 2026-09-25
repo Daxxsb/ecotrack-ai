@@ -1,0 +1,5 @@
+Entrada: Hoy usamos 5 camionetas de reparto y gastamos 200kWh de luz
+  Electricidad (red Colombia): 200 kWh -> 26.0 kg CO2e (200kwh)
+  Camioneta de reparto (diésel): 400 km -> 100.0 kg CO2e (5 vehículos × 80 km (promedio))
+  Camión de carga: 400 km -> 360.0 kg CO2e (5 vehículos × 80 km (promedio))
+  TOTAL: 486.0 kg CO2e

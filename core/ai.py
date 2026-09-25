@@ -83,7 +83,7 @@ def extract_simulated(text: str) -> list[Activity]:
             activities.append(Activity(tipo, qty, detalle))
 
     for tipo, pattern in VEHICLES.items():
-        for m in re.finditer(NUM + r"\s+(?:" + pattern + r")", norm):
+        for m in re.finditer(NUM + r"\s+(?:" + pattern + r")\b", norm):
             count = to_number(m.group(1))
             tail = norm[m.end(): m.end() + 60]
             km_match = re.search(NUM + r"\s*(?:km|kilometros?)", tail)
