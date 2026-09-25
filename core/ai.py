@@ -76,10 +76,11 @@ def extract_simulated(text: str) -> list[Activity]:
     for tipo, rule in QUANTITY_RULES:
         for m in re.finditer(rule, norm):
             qty = to_number(m.group(1))
-            detalle = m.group(0)
+            unidad = FACTORS[tipo]["unidad"]
+            detalle = f"{qty:g} {unidad}"
             if "galon" in m.group(0):
                 qty = round(qty * GALLON_TO_LITER, 2)
-                detalle += f" → {qty} litros"
+                detalle = f"{to_number(m.group(1)):g} galones → {qty:g} litros"
             activities.append(Activity(tipo, qty, detalle))
 
     for tipo, pattern in VEHICLES.items():

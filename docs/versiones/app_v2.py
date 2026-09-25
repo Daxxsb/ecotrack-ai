@@ -64,10 +64,10 @@ def render_analysis(analysis: Analysis, tips: list[str]) -> None:
         return
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("Hoy (kg CO₂e)", f"{analysis.total_kg:,.1f}")
-    c2.metric("Proyección mes (t CO₂e)", f"{analysis.proyeccion_mensual_kg / 1000:,.2f}",
+    c1.metric("Hoy", f"{analysis.total_kg:,.1f} kg CO₂e")
+    c2.metric("Proyección mensual", f"{analysis.proyeccion_mensual_kg / 1000:,.2f} t CO₂e",
               help=f"Hoy × {ASSUMPTIONS['dias_laborales_mes']} días laborales")
-    c3.metric("Árboles/año para compensar", f"{analysis.arboles_equivalentes:,}",
+    c3.metric("Árboles para compensar", f"{analysis.arboles_equivalentes:,}",
               help=f"Un árbol absorbe ~{ASSUMPTIONS['kg_co2_absorbidos_por_arbol_anio']} kg CO₂ al año")
 
     df = pd.DataFrame(
