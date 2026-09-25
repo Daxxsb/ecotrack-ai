@@ -1,0 +1,23 @@
+{
+  "_fuentes": "Valores aproximados (kg CO2e por unidad) para fines de estimación. Combustibles: US EPA GHG Emission Factors Hub. Electricidad: factor de la red colombiana (UPME/XM, aprox.). Vehículos, residuos y papel: UK DEFRA/DESNZ GHG Conversion Factors. Redondeados.",
+  "factores": {
+    "camioneta":    {"factor": 0.25,  "unidad": "km",        "etiqueta": "Camioneta de reparto (diésel)", "categoria": "Transporte"},
+    "camion":       {"factor": 0.90,  "unidad": "km",        "etiqueta": "Camión de carga",               "categoria": "Transporte"},
+    "carro":        {"factor": 0.17,  "unidad": "km",        "etiqueta": "Carro particular",              "categoria": "Transporte"},
+    "moto":         {"factor": 0.11,  "unidad": "km",        "etiqueta": "Moto de mensajería",            "categoria": "Transporte"},
+    "vuelo":        {"factor": 0.15,  "unidad": "km",        "etiqueta": "Vuelo nacional (por pasajero)", "categoria": "Transporte"},
+    "diesel":       {"factor": 2.69,  "unidad": "litro",     "etiqueta": "Diésel",                        "categoria": "Combustibles"},
+    "gasolina":     {"factor": 2.35,  "unidad": "litro",     "etiqueta": "Gasolina",                      "categoria": "Combustibles"},
+    "gas_natural":  {"factor": 1.94,  "unidad": "m³",        "etiqueta": "Gas natural",                   "categoria": "Combustibles"},
+    "glp":          {"factor": 2.94,  "unidad": "kg",        "etiqueta": "Gas propano (GLP)",             "categoria": "Combustibles"},
+    "electricidad": {"factor": 0.13,  "unidad": "kWh",       "etiqueta": "Electricidad (red Colombia)",   "categoria": "Energía"},
+    "residuos":     {"factor": 0.50,  "unidad": "kg",        "etiqueta": "Residuos a relleno sanitario",  "categoria": "Residuos"},
+    "papel":        {"factor": 2.50,  "unidad": "resma",     "etiqueta": "Papel de oficina",              "categoria": "Insumos"},
+    "agua":         {"factor": 0.34,  "unidad": "m³",        "etiqueta": "Agua potable",                  "categoria": "Insumos"}
+  },
+  "supuestos": {
+    "km_por_vehiculo_dia": 80,
+    "dias_laborales_mes": 26,
+    "kg_co2_absorbidos_por_arbol_anio": 22
+  }
+}

@@ -1,0 +1,27 @@
+# .cursorrules – EcoTrack AI (MVP para pequeños negocios)
+
+## Rol
+Eres un ingeniero de producto senior y ejecutor. Yo dirijo la visión; tú implementas, pruebas y propones mejoras.
+
+## Producto
+- Usuario: dueño de un pequeño negocio sin tiempo para formularios.
+- Entrada: chat en lenguaje natural ("Hoy usamos 5 camionetas y gastamos 200kWh de luz").
+- Salida inmediata: total del día, proyección mensual, equivalencia en árboles, desglose, gráfico por categoría y 3 recomendaciones.
+
+## Arquitectura
+- Python 3.11 + Streamlit. app.py (UI) / core/ai.py (IA) / core/calculator.py (cálculo) / data/ (factores).
+- La IA SOLO interpreta texto y redacta recomendaciones. El cálculo de CO2e es determinístico con factores documentados.
+- LLM real (Claude o GPT-4o, JSON estructurado) si hay API key; si no, modo "IA simulada" por reglas. La app nunca se cae.
+- Claves solo en variables de entorno / Secrets de Replit.
+
+## Calidad
+- Funciones pequeñas, type hints, docstrings breves.
+- Todo bug corregido lleva una prueba de regresión en tests/.
+- Transparencia: mostrar cómo se interpretó cada actividad, marcar supuestos y advertir posibles dobles conteos.
+
+## Vibe
+- Minimalista, tonos verdes, mucho aire, lenguaje cercano y sin jerga.
+- El asistente tutea, es breve y siempre cierra con acciones concretas y de bajo costo.
+
+## Despliegue
+- Replit: streamlit run app.py --server.port 8080 --server.address 0.0.0.0
