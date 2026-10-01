@@ -1,0 +1,36 @@
+{
+    "lineas": [
+        {
+            "tipo": "camioneta",
+            "actividad": "Camioneta de reparto (diésel)",
+            "categoria": "Transporte",
+            "cantidad": 400.0,
+            "unidad": "km",
+            "factor": 0.25,
+            "kg_co2e": 100.0,
+            "supuesto": true
+        },
+        {
+            "tipo": "electricidad",
+            "actividad": "Electricidad (red Colombia)",
+            "categoria": "Energía",
+            "cantidad": 200.0,
+            "unidad": "kWh",
+            "factor": 0.13,
+            "kg_co2e": 26.0,
+            "supuesto": false
+        }
+    ],
+    "total_kg": 126.0,
+    "por_categoria": {
+        "Transporte": 100.0,
+        "Energía": 26.0
+    },
+    "proyeccion_mensual_kg": 3276.0,
+    "proyeccion_mensual_t": 3.28,
+    "arboles_equivalentes": 1787,
+    "advertencias": [
+        "Algunas cantidades fueron asumidas (p. ej. 80 km por vehículo). Ingresa los valores reales para afinar el cálculo."
+    ],
+    "fuentes": "Valores aproximados (kg CO2e por unidad) para fines de estimación. Combustibles: US EPA GHG Emission Factors Hub. Electricidad: factor de la red colombiana (UPME/XM, aprox.). Vehículos, residuos y papel: UK DEFRA/DESNZ GHG Conversion Factors. Redondeados."
+}

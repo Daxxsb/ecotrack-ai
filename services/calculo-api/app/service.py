@@ -1,53 +1,49 @@
-"""Lógica de negocio del motor de cálculo y validación (C8)."""
-import json
-from pathlib import Path
-
+"""Lógica pura del motor de cálculo y validación (C8). No depende de FastAPI."""
+from app.catalog import FACTORES, FUENTES, SUPUESTOS
 from app.models import Actividad, Linea, ResultadoCalculo
 
-DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "emission_factors.json"
-
-DIAS_LABORALES_MES = 26
-KG_CO2_POR_ARBOL_ANIO = 22
 VEHICULOS = {"camioneta", "camion", "carro", "moto"}
 COMBUSTIBLES = {"diesel", "gasolina"}
 
 
-def cargar_factores(path: Path = DATA_PATH) -> dict:
-    """Carga el catálogo de factores de emisión (C7)."""
-    with open(path, encoding="utf-8") as f:
-        return json.load(f)
+def calcular_linea(act: Actividad) -> Linea:
+    """Regla: kg CO2e = cantidad × factor, redondeado a 2 decimales."""
+    info = FACTORES[act.tipo]
+    return Linea(tipo=act.tipo, actividad=info["etiqueta"], categoria=info["categoria"],
+                 cantidad=act.cantidad, unidad=info["unidad"], factor=info["factor"],
+                 kg_co2e=round(act.cantidad * info["factor"], 2), supuesto=act.supuesto)
 
 
-CATALOGO = cargar_factores()
-
-
-def calcular(actividades: list[Actividad]) -> ResultadoCalculo:
-    """Calcula emisiones, métricas agregadas y advertencias."""
-    factores = CATALOGO["factores"]
-    lineas: list[Linea] = []
-    por_categoria: dict[str, float] = {}
-
-    # 1-3) Buscar el factor de cada tipo y calcular línea por línea
-    for act in actividades:
-        info = factores[act.tipo]
-        kg = round(act.cantidad * info["factor"], 2)
-        lineas.append(Linea(actividad=info["etiqueta"], categoria=info["categoria"],
-                            cantidad=act.cantidad, unidad=info["unidad"], kg_co2e=kg))
-        por_categoria[info["categoria"]] = round(por_categoria.get(info["categoria"], 0) + kg, 2)
-
-    # 4) Agregar y proyectar
-    total = round(sum(l.kg_co2e for l in lineas), 2)
-    proyeccion = round(total * DIAS_LABORALES_MES, 2)
-    arboles = round(proyeccion * 12 / KG_CO2_POR_ARBOL_ANIO)
-
-    # 5) Advertencias
+def generar_advertencias(actividades: list[Actividad]) -> list[str]:
+    """Reglas de validación: doble conteo y datos asumidos."""
     tipos = {a.tipo for a in actividades}
     advertencias = []
     if tipos & VEHICULOS and tipos & COMBUSTIBLES:
-        advertencias.append("Posible doble conteo: reportaste km de vehículos y litros de combustible.")
+        advertencias.append(
+            "Posible doble conteo: reportaste km de vehículos y también litros de combustible. "
+            "Si el combustible es de esos mismos vehículos, reporta solo uno de los dos "
+            "(el combustible es más preciso).")
     if any(a.supuesto for a in actividades):
-        advertencias.append("Algunos datos fueron asumidos. Ingresa los valores reales para mayor precisión.")
+        advertencias.append(
+            f"Algunas cantidades fueron asumidas (p. ej. {SUPUESTOS['km_por_vehiculo_dia']} km por "
+            "vehículo). Ingresa los valores reales para afinar el cálculo.")
+    return advertencias
 
-    return ResultadoCalculo(lineas=lineas, total_kg=total, por_categoria=por_categoria,
-                            proyeccion_mensual_kg=proyeccion, arboles_equivalentes=arboles,
-                            advertencias=advertencias, fuentes=CATALOGO["_fuentes"])
+
+def calcular(actividades: list[Actividad]) -> ResultadoCalculo:
+    """Flujo: factores → líneas → agregados y proyección → advertencias."""
+    lineas = [calcular_linea(a) for a in actividades]
+
+    por_categoria: dict[str, float] = {}
+    for l in lineas:
+        por_categoria[l.categoria] = round(por_categoria.get(l.categoria, 0.0) + l.kg_co2e, 2)
+
+    total = round(sum(l.kg_co2e for l in lineas), 2)
+    proyeccion_kg = round(total * SUPUESTOS["dias_laborales_mes"], 2)
+    arboles = round(proyeccion_kg * 12 / SUPUESTOS["kg_co2_absorbidos_por_arbol_anio"])
+
+    return ResultadoCalculo(
+        lineas=lineas, total_kg=total, por_categoria=por_categoria,
+        proyeccion_mensual_kg=proyeccion_kg, proyeccion_mensual_t=round(proyeccion_kg / 1000, 2),
+        arboles_equivalentes=arboles, advertencias=generar_advertencias(actividades),
+        fuentes=FUENTES)

@@ -1,0 +1,6 @@
+tipo desconocido ('helicoptero'): HTTP 500 -> Internal Server Error
+cantidad negativa: HTTP 200 -> {"lineas":[{"actividad":"Electricidad (red Colombia)","categoria":"Energía","cantidad":-50.0,"unidad":"kWh","kg_co2e":-6.5}],"total_kg":-6.5,"por_cate
+lista vacía: HTTP 200 -> {"lineas":[],"total_kg":0.0,"por_categoria":{},"proyeccion_mensual_kg":0.0,"arboles_equivalentes":0,"advertencias":[],"fuentes":"Valores aproximados (
+cantidad como texto: HTTP 422 -> {"detail":[{"type":"float_parsing","loc":["body","actividades",0,"cantidad"],"msg":"Input should be a valid number, unable to parse string as a number
+criterio 3,28 t/mes: 3276.0 (kg; la spec pide t)
+lineas con fuente propia?: False | advertencias: ['Algunos datos fueron asumidos. Ingresa los valores reales para mayor precisión.']

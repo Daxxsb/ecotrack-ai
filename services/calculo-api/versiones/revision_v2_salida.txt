@@ -1,0 +1,6 @@
+tipo desconocido ('helicoptero'): HTTP 422 -> {"errores":[{"campo":"actividades.0.tipo","mensaje":"tipo 'helicoptero' no existe. Tipos válidos: agua, camion, camioneta, carro, diesel, electricidad
+cantidad negativa: HTTP 422 -> {"errores":[{"campo":"actividades.0.cantidad","mensaje":"debe ser mayor que 0"}]}
+lista vacía: HTTP 422 -> {"errores":[{"campo":"actividades","mensaje":"debe tener al menos 1 actividad"}]}
+cantidad como texto: HTTP 422 -> {"errores":[{"campo":"actividades.0.cantidad","mensaje":"debe ser un número"}]}
+criterio 3,28 t/mes: 3.28
+factor por línea (trazabilidad): 0.25 | advertencias: ['Algunas cantidades fueron asumidas (p. ej. 80 km por vehículo). Ingresa los valores reales para afinar el cálculo.']
